@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './randomChar.css';
 import gotService from '../../services/gotService'
 import Loader from '../loader'
+import ErrorMessage  from '../errorMessage'
 export default class RandomChar extends Component {
 
     constructor() {
@@ -11,7 +12,9 @@ export default class RandomChar extends Component {
    gotService = new gotService()
     state = {
         char: {},
-        loading: true
+        loading: true,
+        error: false
+
     }
     onCharLoaded = (char) => {
         this.setState({
@@ -19,19 +22,31 @@ export default class RandomChar extends Component {
             loading: false
         })
     }
+    onError = (char) => {
+        this.setState({
+            char,
+            loading: false,
+            error: true
+        })
+    }
     updateChar() {
-        const id = Math.floor(Math.random()*140 + 25) //25-140 character
+        const id = Math.floor(Math.random() * 140 + 25) //25-140 character
         this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
+            .catch(this.onError)
     }
     render() {
-        const{ char , loading }= this.state
-        const content = loading ? <Loader/> : <View char={char}/>
+        const{ char , loading , error}= this.state
+        const content = !(loading || error) ? <View char={char}/> : null
+        const loader = loading ? <Loader/> : null
+        const errorMes = error ? <ErrorMessage/> : null
 
 
         return (
             <div className="random-block rounded">
+                {loader}
                 {content}
+                {errorMes}
             </div>
         );
     }
@@ -62,6 +77,6 @@ const View = ({ char }) => {
                         <span>{culture || mess}</span>
                     </li>
                  </ul>
-                 </>
+            </>
         )
     }
