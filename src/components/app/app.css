@@ -1,0 +1,8 @@
+.app{
+    min-height: 100vh;
+}
+.welcome{
+    color: white;
+    font-size: 36px;
+    margin-top: 40px;
+}

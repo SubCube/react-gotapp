@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './randomChar.css';
-import gotService from '../../services/gotService'
+import GotService from '../../services/gotService'
 import Loader from '../loader'
 import ErrorMessage  from '../errorMessage'
 export default class RandomChar extends Component {
@@ -9,7 +9,7 @@ export default class RandomChar extends Component {
         super()
 
     }
-   gotService = new gotService()
+   gotService = new GotService()
     state = {
         char: {},
         loading: true,
