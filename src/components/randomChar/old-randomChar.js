@@ -1,69 +1,54 @@
-import React, {useState, useEffect} from 'react';
+import React, {Component} from 'react';
 import './randomChar.css';
 import GotService from '../../services/gotService'
 import Loader from '../loader'
 import ErrorMessage  from '../errorMessage'
-export default function RandomChar({interval}) {
+export default class RandomChar extends Component {
 
+    constructor() {
+        super()
 
-    let gotService = new GotService()
-    const [char, updateChar] = useState({})
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
-    // state = {
-    //     char: {},
-    //     loading: true,
-    //     error: false
-
-    // }
-    useEffect(() => {
-        updateChar()
-        let timerId = setInterval(updateChar, interval)
-        return () => {
-        clearInterval(timerId)
-
-        }
-    })
-
-    // componentDidMount() {
-    //     console.log('mounting')
-    //     this.updateChar()
-    //     this.timerId = setInterval(this.updateChar, this.props.interval)
-    // }
-    // componentWillUnmount() {
-    //     console.log('destroyed')
-    //     clearInterval(this.timerId)
-
-
-    // }
-    function onCharLoaded (char) {
-        // this.setState({
-        //     char,
-        //     loading: false
-        // })
-        setLoading(false)
-        updateChar(char)
     }
-    function onError (char) {
-        // this.setState({
-        //     char,
-        //     loading: false,
-        //     error: true
-        // })
-        setLoading(false)
-        updateChar(char)
-        setError(true)
+   gotService = new GotService()
+    state = {
+        char: {},
+        loading: true,
+        error: false
 
+    }
+    componentDidMount() {
+        console.log('mounting')
+        this.updateChar()
+        this.timerId = setInterval(this.updateChar, this.props.interval)
+    }
+    componentWillUnmount() {
+        console.log('destroyed')
+        clearInterval(this.timerId)
+
+
+    }
+    onCharLoaded = (char) => {
+        this.setState({
+            char,
+            loading: false
+        })
+    }
+    onError = (char) => {
+        this.setState({
+            char,
+            loading: false,
+            error: true
+        })
     }
     updateChar = () => {
         console.log('created')
         const id = Math.floor(Math.random() * 140 + 25) //25-140 character
-        gotService.getCharacter(id)
-            .then(onCharLoaded)
-            .catch(onError)
+        this.gotService.getCharacter(id)
+            .then(this.onCharLoaded)
+            .catch(this.onError)
     }
-    // render() {
-        // const{ char , loading , error}= this.state
+    render() {
+        const{ char , loading , error}= this.state
         const content = !(loading || error) ? <View char={char}/> : null
         const loader = loading ? <Loader/> : null
         const errorMes = error ? <ErrorMessage/> : null
@@ -76,7 +61,7 @@ export default function RandomChar({interval}) {
                 {errorMes}
             </div>
         );
-    // }
+    }
 
 
 }
