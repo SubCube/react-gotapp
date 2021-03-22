@@ -19,7 +19,7 @@ export default class RandomChar extends Component {
     componentDidMount() {
         console.log('mounting')
         this.updateChar()
-        this.timerId = setInterval(this.updateChar, 1500)
+        this.timerId = setInterval(this.updateChar, this.props.interval)
     }
     componentWillUnmount() {
         console.log('destroyed')
@@ -66,7 +66,6 @@ export default class RandomChar extends Component {
 
 }
 const View = ({ char }) => {
-    const mess = 'no info'
     const {name, gender, born, died, culture } = char
          return (
              <>
@@ -74,21 +73,21 @@ const View = ({ char }) => {
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item d-flex justify-content-between">
                         <span className="term">Gender </span>
-                        <span>{gender || mess}</span>
+                        <span>{gender}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between">
                         <span className="term">Born </span>
-                        <span>{born || mess}</span>
+                        <span>{born}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between">
                         <span className="term">Died </span>
-                        <span>{died || mess}</span>
+                        <span>{died}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between">
                         <span className="term">Culture </span>
-                        <span>{culture || mess}</span>
+                        <span>{culture}</span>
                     </li>
                  </ul>
             </>
         )
-    }
+}
