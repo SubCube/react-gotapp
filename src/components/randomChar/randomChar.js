@@ -7,15 +7,10 @@ export default function RandomChar({interval}) {
 
 
     let gotService = new GotService()
-    const [char, updateChar] = useState({})
+    const [char, updateCharacter] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    // state = {
-    //     char: {},
-    //     loading: true,
-    //     error: false
 
-    // }
     useEffect(() => {
         updateChar()
         let timerId = setInterval(updateChar, interval)
@@ -23,47 +18,26 @@ export default function RandomChar({interval}) {
         clearInterval(timerId)
 
         }
-    })
+    },[])
 
-    // componentDidMount() {
-    //     console.log('mounting')
-    //     this.updateChar()
-    //     this.timerId = setInterval(this.updateChar, this.props.interval)
-    // }
-    // componentWillUnmount() {
-    //     console.log('destroyed')
-    //     clearInterval(this.timerId)
-
-
-    // }
     function onCharLoaded (char) {
-        // this.setState({
-        //     char,
-        //     loading: false
-        // })
         setLoading(false)
-        updateChar(char)
+        updateCharacter(char)
     }
     function onError (char) {
-        // this.setState({
-        //     char,
-        //     loading: false,
-        //     error: true
-        // })
         setLoading(false)
-        updateChar(char)
+        updateCharacter(char)
         setError(true)
 
     }
-    updateChar = () => {
+    function updateChar () {
         console.log('created')
         const id = Math.floor(Math.random() * 140 + 25) //25-140 character
         gotService.getCharacter(id)
             .then(onCharLoaded)
             .catch(onError)
     }
-    // render() {
-        // const{ char , loading , error}= this.state
+
         const content = !(loading || error) ? <View char={char}/> : null
         const loader = loading ? <Loader/> : null
         const errorMes = error ? <ErrorMessage/> : null
@@ -76,7 +50,6 @@ export default function RandomChar({interval}) {
                 {errorMes}
             </div>
         );
-    // }
 
 
 }
